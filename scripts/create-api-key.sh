@@ -2,6 +2,10 @@
 
 api_key_name=${API_KEY_NAME:-gha-rotated-key}
 
+gcloud info
+
+gcloud config set project canvas-rampart-423616-b0
+
 gcloud projects get-iam-policy canvas-rampart-423616-b0
 
 echo "List existing keys"
