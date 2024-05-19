@@ -39,7 +39,13 @@ gcloud iam service-accounts create "$SVC_ACCOUNT_NAME" \
 gcloud iam service-accounts add-iam-policy-binding "${SVC_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/iam.workloadIdentityUser" \
   --member="principalSet://iam.googleapis.com/projects/736236199161/locations/global/workloadIdentityPools/${POOL_ID}/attribute.repository/bociankruk/gmaps-api-key-rotation"
+
+gcloud iam service-accounts add-iam-policy-binding "${SVC_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountKeyAdmin" \
+  --member="principalSet://iam.googleapis.com/projects/736236199161/locations/global/workloadIdentityPools/${POOL_ID}/attribute.repository/bociankruk/gmaps-api-key-rotation"
 ```
+
+## Potential improvements
 
 ## Links
  * https://cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines
