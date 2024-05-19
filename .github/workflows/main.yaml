@@ -16,8 +16,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - uses: 'google-github-actions/auth@v2'
+    - id: auth
+      uses: 'google-github-actions/auth@v2'
       with:
+        create_credentials_file: true
         workload_identity_provider: 'projects/736236199161/locations/global/workloadIdentityPools/github-actions-apikey-rotation/providers/github-actions-apikey-rotation'
         service_account: 'svc-gh-rotator@canvas-rampart-423616-b0.iam.gserviceaccount.com'
 
@@ -25,6 +27,11 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v2'
       with:
         version: '>= 363.0.0'
+
+    - name: Set credentials file
+      run: |
+        gcloud auth login
+          --cred-file=${{ steps.auth.outputs.credentials_file_path }}
 
     - name: 'Create new key'
       run: scripts/create-api-key.sh
