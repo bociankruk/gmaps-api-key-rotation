@@ -30,8 +30,9 @@ jobs:
 
     - name: Set credentials file
       run: |
-        gcloud auth login
-          --cred-file=${{ steps.auth.outputs.credentials_file_path }}
+        gcloud auth login --brief \
+          --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud services list
 
     - name: 'Create new key'
       run: scripts/create-api-key.sh
