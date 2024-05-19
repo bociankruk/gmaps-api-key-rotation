@@ -45,9 +45,6 @@ jobs:
       id-token: 'write'
 
     steps:
-    - name: 'Test1'
-      run: env | grep NEW_API_KEY
-
     - name: 'Test2'
       env:
         NEW_API_KEY: ${{ env.NEW_API_KEY }}
