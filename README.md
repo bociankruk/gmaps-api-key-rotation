@@ -15,8 +15,7 @@ To authenticate to...
 
 ```
 POOL_ID="github-actions-apikey-rotation"
-SVC_ACCOUNT_NAME="svc-gh-rotator"
-PROJECT_ID="canvas-rampart-423616-b0"
+REPOSITORY_ID="802606416"
 
 # Create workload identity
 gcloud iam workload-identity-pools create "$POOL_ID" \
@@ -28,21 +27,8 @@ gcloud iam workload-identity-pools providers create-oidc "$PROVIDER_ID" \
   --location="global" \
   --workload-identity-pool="$POOL_ID" \
   --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
+  --attribute-condition="attribute.repository_id==\"${REPOSITORY_ID}\""
   --issuer-uri="https://token.actions.githubusercontent.com"
-
-# Create service account
-gcloud iam service-accounts create "$SVC_ACCOUNT_NAME" \
-  --description="Google Maps API key rotation" \
-  --display-name="$SVC_ACCOUNT_NAME"
-
-# Assign roles to service account
-gcloud iam service-accounts add-iam-policy-binding "${SVC_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/iam.workloadIdentityUser" \
-  --member="principalSet://iam.googleapis.com/projects/736236199161/locations/global/workloadIdentityPools/${POOL_ID}/attribute.repository/bociankruk/gmaps-api-key-rotation"
-
-gcloud iam service-accounts add-iam-policy-binding "${SVC_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/iam.serviceAccountKeyAdmin" \
-  --member="principalSet://iam.googleapis.com/projects/736236199161/locations/global/workloadIdentityPools/${POOL_ID}/attribute.repository/bociankruk/gmaps-api-key-rotation"
 ```
 
 ## Potential improvements
@@ -50,3 +36,4 @@ gcloud iam service-accounts add-iam-policy-binding "${SVC_ACCOUNT_NAME}@${PROJEC
 ## Links
  * https://cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines
  * https://cloud.google.com/blog/products/identity-security/enabling-keyless-authentication-from-github-actions
+ * https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure
