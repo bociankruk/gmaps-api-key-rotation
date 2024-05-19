@@ -7,7 +7,6 @@ jobs:
   rotate:
     runs-on: ubuntu-latest
 
-    # Add "id-token" with the intended permissions.
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -29,6 +28,17 @@ jobs:
 
     - name: 'Create new key'
       run: scripts/create-api-key.sh
+
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: 'Run az commands'
+      run: |
+        az account show
 
     - name: 'Delete old keys'
       run: scripts/delete-old-api-keys.sh
