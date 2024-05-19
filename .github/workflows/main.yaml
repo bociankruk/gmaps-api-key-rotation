@@ -30,13 +30,13 @@ jobs:
       run: scripts/create-api-key.sh
 
     - name: 'Az CLI login'
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: 'Run az commands'
+    - name: 'Update secret on Key vault'
       env:
         KV_NAME: gmapskv
         KV_SECRET_NAME: GoogleMapKey
@@ -45,9 +45,9 @@ jobs:
           --name "$KV_SECRET_NAME" \
           --vault-name "$KV_NAME" \
           --value "$NEW_API_KEY_SECRET" \
-          --output table
+          --output none
 
-        echo "List secrets"
+        echo "List secrets:"
         az keyvault secret list \
           --vault-name "$KV_NAME" \
           --output table

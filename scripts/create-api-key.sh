@@ -18,5 +18,6 @@ new_key_json=$(gcloud services api-keys create \
 NEW_API_KEY_ID=$(echo $new_key_json | jq -r '.name')
 NEW_API_KEY_SECRET=$(echo $new_key_json | jq -r '.api_key')
 
+echo "::add-mask::$NEW_API_KEY_SECRET"
 echo "NEW_API_KEY_ID=$NEW_API_KEY_ID" >> $GITHUB_ENV
 echo "NEW_API_KEY_SECRET=$NEW_API_KEY_SECRET" >> $GITHUB_ENV
