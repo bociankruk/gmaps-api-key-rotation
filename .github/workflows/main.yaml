@@ -1,0 +1,61 @@
+name: 'Rotate Google Maps API key'
+
+on:
+  # Run oot on demand
+  workflow_dispatch:
+
+  # # Optional: run it once a month
+  # schedule:
+  #   - cron: "0 1 * */1 *"
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        project_id: canvas-rampart-423616-b0
+        workload_identity_provider: 'projects/736236199161/locations/global/workloadIdentityPools/github-actions-apikey-rotation/providers/github-actions-apikey-rotation'
+
+    - name: 'Set up Cloud SDK'
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        version: '>= 363.0.0'
+
+    - name: 'Create new key'
+      run: scripts/create-api-key.sh
+
+    - name: 'Az CLI login'
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: 'Update secret on Key vault'
+      env:
+        KV_NAME: gmapskv
+        KV_SECRET_NAME: GoogleMapKey
+      run: |
+        az keyvault secret set \
+          --name "$KV_SECRET_NAME" \
+          --vault-name "$KV_NAME" \
+          --value "$NEW_API_KEY_SECRET" \
+          --output none
+
+        echo "List secrets:"
+        az keyvault secret list \
+          --vault-name "$KV_NAME" \
+          --output table
+
+    - name: 'Delete old keys'
+      run: scripts/delete-old-api-keys.sh
