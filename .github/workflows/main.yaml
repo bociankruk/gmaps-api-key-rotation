@@ -18,7 +18,7 @@ jobs:
 
     - uses: 'google-github-actions/auth@v2'
       with:
-        workload_identity_provider: 'projects/736236199161/locations/global/workloadIdentityPools/github-actions-apikey-rotation/attribute.repository/bociankruk/gmaps-api-key-rotation'
+        workload_identity_provider: 'projects/736236199161/locations/global/workloadIdentityPools/github-actions-apikey-rotation/providers/github-actions-apikey-rotation'
         service_account: 'svc-gh-rotator@canvas-rampart-423616-b0.iam.gserviceaccount.com'
 
     - name: 'Set up Cloud SDK'

@@ -27,7 +27,7 @@ PROVIDER_ID="${POOL_ID}"
 gcloud iam workload-identity-pools providers create-oidc "$PROVIDER_ID" \
   --location="global" \
   --workload-identity-pool="$POOL_ID" \
-  --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.aud=assertion.aud" \
+  --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
   --issuer-uri="https://token.actions.githubusercontent.com"
 
 # Create service account
