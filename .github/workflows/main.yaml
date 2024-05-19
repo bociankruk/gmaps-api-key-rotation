@@ -30,7 +30,7 @@ jobs:
 
     - name: Set credentials file
       run: |
-        gcloud auth login --brief \
+        gcloud auth login --brief --force \
           --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud services list
 
