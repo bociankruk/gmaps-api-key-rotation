@@ -30,8 +30,25 @@ jobs:
     - name: 'Create new key'
       run: scripts/create-api-key.sh
 
-    - name: 'Store new key in Key Vault'
-      run: env | grep NEW_API_KEY
-
     - name: 'Delete old keys'
       run: scripts/delete-old-api-keys.sh
+
+  stage2:
+    needs:
+      - rotate
+
+    runs-on: ubuntu-latest
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: 'Test1'
+      run: env | grep NEW_API_KEY
+
+    - name: 'Test2'
+      env:
+        NEW_API_KEY: ${{ env.NEW_API_KEY }}
+      run: env | grep NEW_API_KEY
