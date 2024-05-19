@@ -19,6 +19,7 @@ jobs:
     - id: auth
       uses: 'google-github-actions/auth@v2'
       with:
+        project_id: canvas-rampart-423616-b0
         workload_identity_provider: 'projects/736236199161/locations/global/workloadIdentityPools/github-actions-apikey-rotation/providers/github-actions-apikey-rotation'
 
     - name: 'Set up Cloud SDK'
