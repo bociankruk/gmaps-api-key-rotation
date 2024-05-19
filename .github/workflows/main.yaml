@@ -41,7 +41,6 @@ jobs:
         KV_NAME: gmapskv
         KV_SECRET_NAME: GoogleMapKey
       run: |
-        az account show
         az keyvault secret set \
           --name "$KV_SECRET_NAME" \
           --vault-name "$KV_NAME" \
@@ -50,7 +49,8 @@ jobs:
 
         echo "List secrets"
         az keyvault secret list \
-          --vault-name "$KV_NAME"
+          --vault-name "$KV_NAME" \
+          --output table
 
     - name: 'Delete old keys'
       run: scripts/delete-old-api-keys.sh
