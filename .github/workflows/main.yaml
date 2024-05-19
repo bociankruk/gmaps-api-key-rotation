@@ -26,5 +26,5 @@ jobs:
       with:
         version: '>= 363.0.0'
 
-    - name: 'Use gcloud CLI'
-      run: gcloud info
+    - name: 'Create new key'
+      run: scripts/create-api-key.sh
