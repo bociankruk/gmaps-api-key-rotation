@@ -12,3 +12,5 @@ gcloud services api-keys list --format="value(name)"
 NEW_KEY=$(gcloud services api-keys create \
     --display-name="${api_key_name}" \
     --format="value(key)")
+
+echo $NEW_KEY
